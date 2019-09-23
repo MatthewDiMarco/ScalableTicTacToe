@@ -25,7 +25,7 @@ EXEC 	= TicTacToe
 
 ifdef DEBUG
 CFLAGS += -g
-DEBUG : clean $(EXEC1) $(EXEC2)
+DEBUG : clean $(EXEC)
 endif
 
 ifdef SECRET

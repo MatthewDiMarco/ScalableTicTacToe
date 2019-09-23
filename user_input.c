@@ -6,7 +6,7 @@
  * PURPOSE:     Contains functions for retrieving, modifying and returning/
  *              exporting all input from the user via the keyboard.
  *
- * LAST MOD:    22/09/19 
+ * LAST MOD:    23/09/19 
  * ***************************************************************************/
 #include <stdio.h>
 

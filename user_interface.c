@@ -7,7 +7,7 @@
  *              menus. Also contains functionality for displaying various 
  *              graphics to the terminal, such as the tic-tac-toe N*M board.
  *
- * LAST MOD:    22/09/19 
+ * LAST MOD:    23/09/19 
  * ***************************************************************************/
 #include <stdio.h>
 #include <stdlib.h>
@@ -39,10 +39,11 @@ void mainMenu(char* settingsFileName)
     /* validate settings file */
     if(readSettings(settingsFileName, &m, &n, &k) == -1)
     {
-        printf("failed to read %s: shutting down...\n", settingsFileName);
+        printf("failed to read %s: shutting down...\n\n", settingsFileName);
     }
     else /* if settings are ok, enter main loop */
     {
+        printf("\n---Welcome---\n");
         running = TRUE;
         do
         {
@@ -61,7 +62,8 @@ void mainMenu(char* settingsFileName)
                     break;
 
                 case 2 :
-                    printf("\nfunction (2) not implemented yet\n");
+                    printf("\nSETTINGS:\n---------\n");
+                    printf("M=%d\nN=%d\nK=%d\n---------\n", m, n, k);
                     break;
 
                 case 3 :
@@ -73,7 +75,7 @@ void mainMenu(char* settingsFileName)
                     break;
 
                 case 5 : 
-                    printf("\ngoodbye...\n");
+                    printf("\ngoodbye...\n\n");
                     running = FALSE;            
                     break;
 
