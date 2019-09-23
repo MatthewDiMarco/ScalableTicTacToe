@@ -1,0 +1,33 @@
+Rough layout/design for the 'dynamic_tic-tac-toe' game.
+
+note: each .c file by default has a corresponding .h hile
+===============================================================================
+FILE                RESPONSIBILITY                          DEPENDENCIES
+===============================================================================
+user_input.c        Responsible for retrieving, modifying   user_input.h
+                    and returning/exporting all input from 
+                    the user via the keyboard.
+-------------------------------------------------------------------------------
+user_interface.c    Responsible for outputting all menus    user_interface.h
+                    and graphics via stdout to the          user_input.h
+                    terminal.                               file_manager.h
+                                                            game_rules.h
+                                                            linked_list.h
+-------------------------------------------------------------------------------
+file_manager.c      Responsible for all file reading,       file_manager.h
+                    writing and modification.               linked_list.h
+                    Will have a function for saving a
+                    linked list (i.e. log) to a file. 
+-------------------------------------------------------------------------------
+game_rules.c        Responsible for updating board,         game_rules.h 
+                    checking tile occupations and           linked_list.h
+                    finding a winner. Will use a            
+                    linked list to track moves.
+-------------------------------------------------------------------------------
+linked_list.c       A linked list implementation for        linked_list.h
+                    tracking game moves.
+
+-------------------------------------------------------------------------------
+main.c              Contains the main algorithm.            user_interface.h
+                    calls the main menu in user_interface.c
+===============================================================================
