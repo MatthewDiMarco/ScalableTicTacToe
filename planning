@@ -20,10 +20,9 @@ file_manager.c      Responsible for all file reading,       file_manager.h
                     linked list (i.e. log) to a file. 
 -------------------------------------------------------------------------------
 board.c             Responsible for representing and        board.h
-                    updating a board using a 2d array,      linked_list.h
+                    updating a board using a 2d array,  
                     checking tile occupations and           
-                    finding a winner. Will use a            
-                    linked list to track moves.
+                    finding a winner. 
 -------------------------------------------------------------------------------
 linked_list.c       A linked list implementation for        linked_list.h
                     tracking game moves.

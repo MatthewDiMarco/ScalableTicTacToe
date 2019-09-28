@@ -47,3 +47,21 @@ int readInt(char msg[], int lower, int upper)
     while((value < lower) || (value > upper));
     return value; 
 }
+
+/* ****************************************************************************
+ * NAME:        readCoords
+ *
+ * PURPOSE:     To read in the x and y coordinates for a board.
+ *
+ * IMPORTS:     xx, yy (integer pointers)
+ * EXPORTS:     none
+ * ***************************************************************************/
+void readCoords(int* xx, int* yy)
+{
+    int ix, iy;
+    printf("\nSelect a tile (x,y)\n");   
+    ix = readInt("x -> ", 0, 9);
+    iy = readInt("y -> ", 0, 9);
+    *xx = ix;
+    *yy = iy;
+}

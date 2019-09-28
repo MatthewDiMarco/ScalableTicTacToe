@@ -17,6 +17,7 @@
 
 #include "file_manager.h"
 #include "linked_list.h"
+#include "board.h"
 
 /* static function declarations */
 static int processLine(char* line, int* dupe, int* value, int lineNum);
@@ -150,7 +151,7 @@ static int processLine(char* line, int* dupe, int* value, int lineNum)
     }
     else /* This is a duplicate setting */
     {
-        printf("duplicate setting 'M' at line %d\n", lineNum);
+        printf("duplicate setting at line %d\n", lineNum);
         status = -1;
     }
 

@@ -26,3 +26,13 @@
  * EXPORTS:     value (integer)
  * ***************************************************************************/
 int readInt(char msg[], int lower, int upper);
+
+/* ****************************************************************************
+ * NAME:        readCoords
+ *
+ * PURPOSE:     To read in the x and y coordinates for a board.
+ *
+ * IMPORTS:     xx, yy (integer pointers)
+ * EXPORTS:     none
+ * ***************************************************************************/
+void readCoords(int* xx, int* yy);

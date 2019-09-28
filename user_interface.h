@@ -8,6 +8,7 @@
  *
  * LAST MOD:    28/09/19 
  * ***************************************************************************/
+#include "board.h"
 
 /* macros and constants */
 
@@ -32,4 +33,14 @@
  * ***************************************************************************/
 void mainMenu(char* settingsFileName);
 
-void displayBoard(int width, int height);
+void playGame(Board* board);
+
+/* ****************************************************************************
+ * NAME:        displayBoard
+ *
+ * PURPOSE:     To display the contents of a board to the terminal.
+ *
+ * IMPORTS:     board (Board pointer) 
+ * EXPORTS:     none
+ * ***************************************************************************/
+void displayBoard(Board* board);

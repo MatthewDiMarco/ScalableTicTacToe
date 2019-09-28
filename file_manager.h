@@ -17,10 +17,6 @@
  */
 #define LENGTH_OF_SETTINGS 6
 
-/* The upper and lower bound values (inclusive) for the game settings */
-#define UPPER 9
-#define LOWER 1
-
 /**
  * These constants can be used with integers to model booleans.
  * (Ref: Lecture 2: Environments - slide 15)
