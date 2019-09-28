@@ -7,7 +7,7 @@
  *              menus. Also contains functionality for displaying various 
  *              graphics to the terminal, such as the tic-tac-toe N*M board.
  *
- * LAST MOD:    23/09/19 
+ * LAST MOD:    28/09/19 
  * ***************************************************************************/
 #include <stdio.h>
 #include <stdlib.h>
@@ -21,9 +21,11 @@
 
 /* ****************************************************************************
  * NAME:        mainMenu
+ *
  * PURPOSE:     To print a list of options to the terminal which the user can
  *              select from. The appropriate function will be called based
  *              on what the user selected.
+ *
  * IMPORTS:     settingsFileName (string)
  * EXPORTS:     none
  * ***************************************************************************/
@@ -43,7 +45,7 @@ void mainMenu(char* settingsFileName)
     }
     else /* if settings are ok, enter main loop */
     {
-        printf("\n---Welcome---\n");
+        printf("\n  ---Welcome---\n");
         running = TRUE;
         do
         {
@@ -58,12 +60,12 @@ void mainMenu(char* settingsFileName)
             switch(option)
             {
                 case 1 :
-                    printf("\nfunction (1) not implemented yet\n");            
+                    displayBoard(m, n);
                     break;
 
                 case 2 :
                     printf("\nSETTINGS:\n---------\n");
-                    printf("M=%d\nN=%d\nK=%d\n---------\n", m, n, k);
+                    printf("   M=%d\n   N=%d\n   K=%d\n---------\n", m, n, k);
                     break;
 
                 case 3 :
@@ -86,4 +88,73 @@ void mainMenu(char* settingsFileName)
         }
         while(running == TRUE);
     }
+}
+
+/*TODO: add 2d array import!*/
+/* ****************************************************************************
+ * NAME:        displayBoard
+ *
+ * PURPOSE:     To print a list of options to the terminal which the user can
+ *              select from. The appropriate function will be called based
+ *              on what the user selected.
+ *
+ * IMPORTS:     width, height (integers), board (2d array) 
+ * EXPORTS:     none
+ * ***************************************************************************/
+void displayBoard(int width, int height)
+{
+    int ii, jj;
+
+    /* print upper border */
+    printf("==");
+    for(ii = 0; ii < width; ii++) 
+    {
+        printf("====");
+    }
+    printf("=\n");
+
+    /** 
+     * Print board. 
+     * height is multiplied by 2 to include inner borders.
+     */
+    for(ii = 0; ii < height; ii++)
+    {
+        printf("||");
+        for(jj = 0; jj < width; jj++)
+        {
+            /* check if position is occupied */
+
+            /* temp: just print empty */
+            printf(" X |");
+        }
+        printf("|\n");
+       
+        /* if we're on the last iteration, we don't need an inner border */
+        if(ii != height - 1)
+        { 
+            /* print inner border */
+            printf("||");
+            for(jj = 0; jj < width; jj++) 
+            {
+                /* if we're on the last iteration, close the row with '|' */
+                if(jj == width - 1)
+                {
+                    printf("---|");
+                } 
+                else
+                {
+                    printf("----");
+                }
+            }
+            printf("|\n");
+        }
+    }
+
+    /* print lower border */
+    printf("==");
+    for(ii = 0; ii < width; ii++) 
+    {
+        printf("====");
+    } 
+    printf("=\n");
 }

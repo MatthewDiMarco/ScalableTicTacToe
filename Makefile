@@ -18,7 +18,7 @@
 
 CC 		= gcc
 CFLAGS 	= -Wall -ansi -pedantic -Werror
-OBJ 	= main.o user_input.o user_interface.o file_manager.o game_rules.o linked_list.o 
+OBJ 	= main.o user_input.o user_interface.o file_manager.o board.o linked_list.o 
 EXEC 	= TicTacToe
 
 # conditional compilation
@@ -51,8 +51,8 @@ user_interface.o : user_interface.c user_interface.h
 file_manager.o : file_manager.c file_manager.h linked_list.h 
 		$(CC) file_manager.c -c $(CFLAGS)
 
-game_rules.o : game_rules.c game_rules.h linked_list.h
-		$(CC) game_rules.c -c $(CFLAGS)
+board.o : board.c board.h linked_list.h
+		$(CC) board.c -c $(CFLAGS)
 
 linked_list.o : linked_list.c linked_list.h
 		$(CC) linked_list.c -c $(CFLAGS)

@@ -1,4 +1,4 @@
-Rough layout/design for the 'dynamic_tic-tac-toe' game.
+Rough layout/design for the 'TicTacToe' C game.
 
 note: each .c file by default has a corresponding .h hile
 ===============================================================================
@@ -19,8 +19,9 @@ file_manager.c      Responsible for all file reading,       file_manager.h
                     Will have a function for saving a
                     linked list (i.e. log) to a file. 
 -------------------------------------------------------------------------------
-game_rules.c        Responsible for updating board,         game_rules.h 
-                    checking tile occupations and           linked_list.h
+board.c             Responsible for representing and        board.h
+                    updating a board using a 2d array,      linked_list.h
+                    checking tile occupations and           
                     finding a winner. Will use a            
                     linked list to track moves.
 -------------------------------------------------------------------------------

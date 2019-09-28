@@ -6,8 +6,10 @@
  * PURPOSE:     Contains definitions of prototypes and macros used inside
  *              of user_interface.c
  *
- * LAST MOD:    22/09/19 
+ * LAST MOD:    28/09/19 
  * ***************************************************************************/
+
+/* macros and constants */
 
 /* the number of option available in the main menu */
 #define NUM_OPTIONS 5 
@@ -20,10 +22,14 @@
 
 /* ****************************************************************************
  * NAME:        mainMenu
+ *
  * PURPOSE:     To print a list of options to the terminal which the user can
  *              select from. The appropriate function will be called based
  *              on what the user selected.
+ *
  * IMPORTS:     settingsFileName (string)
  * EXPORTS:     none
  * ***************************************************************************/
 void mainMenu(char* settingsFileName);
+
+void displayBoard(int width, int height);
