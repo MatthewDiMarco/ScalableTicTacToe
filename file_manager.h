@@ -9,14 +9,24 @@
  * LAST MOD:    23/09/19 
  * ***************************************************************************/
 
+/* macros and constants */
+
 /**
  * Describes the length of a line in a valid settings file (including new
- * line). for instance: 'M=5' is 3 chars, + '\' & 'n' ... thus 5 chars needed.
- *
- * Describes number of available settings in a valid settings file.
- **/
-#define LENGTH_OF_SETTINGS 5
-#define NUM_SETTINGS 3
+ * line character).
+ */
+#define LENGTH_OF_SETTINGS 6
+
+/* The upper and lower bound values (inclusive) for the game settings */
+#define UPPER 9
+#define LOWER 1
+
+/**
+ * These constants can be used with integers to model booleans.
+ * (Ref: Lecture 2: Environments - slide 15)
+ */
+#define FALSE 0
+#define TRUE !FALSE
 
 /* typdefs, enums */
 

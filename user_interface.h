@@ -12,10 +12,6 @@
 /* the number of option available in the main menu */
 #define NUM_OPTIONS 5 
 
-/* these constants can be used with integers to model booleans */
-#define FALSE 0
-#define TRUE !FALSE
-
 /* typdefs, enums */
 
 /* structs */

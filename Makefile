@@ -60,9 +60,22 @@ linked_list.o : linked_list.c linked_list.h
 run :
 		./$(EXEC) settings.txt
 
-runVal: 
+runVal : 
 		valgrind ./$(EXEC) settings.txt
 
-clean:
+# all should fail except for the last two
+testSettings : 
+		./$(EXEC) TestSettingsFiles/format1	
+		./$(EXEC) TestSettingsFiles/format2
+		./$(EXEC) TestSettingsFiles/format3
+		./$(EXEC) TestSettingsFiles/negative
+		./$(EXEC) TestSettingsFiles/duplicates
+		./$(EXEC) TestSettingsFiles/missing
+		./$(EXEC) TestSettingsFiles/empty
+		./$(EXEC) TestSettingsFiles/idontexist
+		echo 5 | ./$(EXEC) TestSettingsFiles/backwards 
+		echo 5 | ./$(EXEC) TestSettingsFiles/lowercase
+
+clean :
 		rm -f $(EXEC) $(OBJ)
 

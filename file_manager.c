@@ -7,16 +7,19 @@
  *              including: 
  *               -> loading game settings
  *               -> saving logs
- *               -> reading logs
  *
- * LAST MOD:    23/09/19 
+ * LAST MOD:    28/09/19 
  * ***************************************************************************/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 
 #include "file_manager.h"
 #include "linked_list.h"
+
+/* static function declarations */
+static int processLine(char* line, int* dupe, int* value, int lineNum);
 
 /* ****************************************************************************
  * NAME:        readSettings
@@ -31,31 +34,71 @@
  * ***************************************************************************/
 int readSettings(char* file, int* inM, int* inN, int* inK)
 {
-    int status = 0, ii;
-    char lines[NUM_SETTINGS][LENGTH_OF_SETTINGS];
+    int status = 0, numLines, 
+    mFound = FALSE, nFound = FALSE, kFound = FALSE;
+    char line[LENGTH_OF_SETTINGS];
 
-    /* open and check file before reading*/
+    /* Open and check file before reading*/
     FILE* settings = fopen(file, "r");
-    if(file == NULL)
+    if(settings == NULL)
     {
         perror("there was an error opening the file");
         status = -1;
     } 
     else 
     {
-        /* loop 3 times, storing each line of the file in a local array */
-        for(ii = 0; ii < NUM_SETTINGS; ii++)
+        /* Loop through each first 3 lines of the file checking for errors */
+        numLines = 0;
+        while((fgets(line, LENGTH_OF_SETTINGS, settings) != NULL))
         {
-            fgets(lines[ii], LENGTH_OF_SETTINGS, settings);
-        }
+            numLines++;
 
-        /* check format of lines. exactly 1 item should have been read */  
-        if(sscanf(lines[0], "M=%d", inM) != 1 ||
-           sscanf(lines[1], "N=%d", inN) != 1 ||
-           sscanf(lines[2], "K=%d", inK) != 1)
-        {
-            printf("\nbad format - please check settings file.\n");
-            printf("file should resemble:\n  M=x\n  N=y\n  K=z\n\n");
+            /** 
+             * Check if this line equals either of the formats, ignoring the
+             * associated value and case sensitivity. Error if neither. 
+             */ 
+            if(strncasecmp(line, "M=", 2) == 0)
+            {
+                if(processLine(line, &mFound, inM, numLines) == -1)
+                {
+                    status = -1;
+                }
+            }
+            else if(strncasecmp(line, "N=", 2) == 0)
+            {
+                if(processLine(line, &nFound, inN, numLines) == -1)
+                {
+                    status = -1;
+                }
+            }
+            else if(strncasecmp(line, "K=", 2) == 0)
+            {
+                if(processLine(line, &kFound, inK, numLines) == -1)
+                {
+                    status = -1;
+                }
+            }
+            else /* bad format */
+            {
+                printf("line %d has invalid format\n", numLines);
+                status = -1;
+            }
+        } 
+
+        /* Miss any settings? */
+        if(mFound == FALSE)
+        {   
+            printf("missing setting 'M'\n");
+            status = -1;
+        }
+        if(nFound == FALSE)
+        {   
+            printf("missing setting 'N'\n");
+            status = -1;
+        }
+        if(kFound == FALSE)
+        {   
+            printf("missing setting 'K'\n");
             status = -1;
         }
 
@@ -67,5 +110,49 @@ int readSettings(char* file, int* inM, int* inN, int* inK)
         }
         fclose(settings);
     }
+    return status;
+}
+
+/* ****************************************************************************
+ * NAME:        processLine
+ *
+ * PURPOSE:     Helper for the readSettings() function.
+ *              Takes a line and checks that:
+ *                  -> this settings has not already been read (duplicate)
+ *                  -> the associated value is a positive integer between the
+ *                     appropriate bounds.
+ *              Should an error occur, a message will be printed and the
+ *              function will return -1 to indicate a failure.
+ *
+ * IMPORTS:     line (string), dupe (boolean pointer), value (integer pointer),
+ *              lineNum (the line we're on)
+ * EXPORTS:     status (integer: -1 if error occured)
+ * ***************************************************************************/
+static int processLine(char* line, int* dupe, int* value, int lineNum)
+{
+    int status = 0;
+    if(*dupe == FALSE) /* Check for duplicate */
+    {
+        /** 
+         * Use sscanf to scan the string line for the following: 
+         *    %*[^=] : collect all character until we hit '=', then
+         *             ignore them with the '*' char.
+         *    %d : The value we wish to validate.
+         */
+        sscanf(line, "%*[^=]=%d", value);
+        if(*value < LOWER || *value > UPPER)
+        {
+            printf("value must be between %d and %d at line %d\n", 
+                    LOWER, UPPER, lineNum);
+            status = -1;
+        } 
+        *dupe = TRUE;
+    }
+    else /* This is a duplicate setting */
+    {
+        printf("duplicate setting 'M' at line %d\n", lineNum);
+        status = -1;
+    }
+
     return status;
 }
