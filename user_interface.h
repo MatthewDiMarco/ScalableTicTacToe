@@ -1,5 +1,6 @@
 /* ****************************************************************************
- * FILE:        user_interface.h
+ * FILE:        user_interface.h 
+ * CREATED:     29/08/19
  * AUTHOR:      Matthew Di Marco
  * UNIT:        UNIX and C programming (COMP1000)
  *
@@ -7,17 +8,20 @@
  *              of user_interface.c
  *
  * LAST MOD:    28/09/19 
+ * MOD BY:      Matthew Di Marco
  * ***************************************************************************/
 #include "board.h"
+#include "linked_list.h"
 
-/* macros and constants */
+/** 
+ * macros and constants 
+ */
 
 /* the number of option available in the main menu */
 #define NUM_OPTIONS 5 
 
-/* typdefs, enums */
-
-/* structs */
+/* the number of chars in a log string */
+#define LOG_SIZE 37
 
 /* prototype declarations */
 
@@ -33,7 +37,8 @@
  * ***************************************************************************/
 void mainMenu(char* settingsFileName);
 
-void playGame(Board* board);
+/* ... */
+void playGame(Board* board, LinkedList* log);
 
 /* ****************************************************************************
  * NAME:        displayBoard
@@ -44,3 +49,15 @@ void playGame(Board* board);
  * EXPORTS:     none
  * ***************************************************************************/
 void displayBoard(Board* board);
+
+/* ... */
+void displayLogs(LinkedList* games);
+
+/* ... */
+void freeGame(void* logs);
+
+/* ... */
+void printLog(void* string);
+
+/* ... */
+void freeLog(void* string);

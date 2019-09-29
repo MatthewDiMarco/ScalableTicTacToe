@@ -96,7 +96,7 @@ void mainMenu(char* settingsFileName)
                 case 5 : /* Exit */
                     printf("\ngoodbye...\n\n");
 
-                    freeLinkedList(games, &freeGame);
+                    freeLinkedList(games, &freeLog);
                     running = FALSE;            
                     break;
 
@@ -142,8 +142,7 @@ void playGame(Board* board, LinkedList* log)
                 thisLog = (char*)malloc(sizeof(char) * LOG_SIZE);
                 sprintf(thisLog, "Turn: %d\nPlayer: %d\nLocation: (%d,%d)",
                         turn, player, xx, yy);
-                insertLast(log, thisLog);
-                thisLog = NULL;       
+                insertLast(log, thisLog);       
  
                 /* Check for winner */
 
@@ -242,7 +241,6 @@ void displayBoard(Board* board)
     printf("=\n");
 }
 
-/*TODO*/
 void displayLogs(LinkedList* listOfGames)
 {
     int game = 0;
@@ -250,8 +248,9 @@ void displayLogs(LinkedList* listOfGames)
     while(thisNode != NULL)
     {
         game++;
-        printf("GAME %d:\n", game);
-        printLinkedList(thisNode->data, &printLog);
+        printf("GAME %d", game);
+
+        printLinkedList(listOfGames->data, &printLog);
 
         thisNode = thisNode->next;
     }
@@ -260,20 +259,33 @@ void displayLogs(LinkedList* listOfGames)
 /* Used as function pointers for linked lists */
 
 /*TODO*/
-void freeGame(void* logs)
+void printLog(void* logs)
 {
     LinkedList* gameLogs = (LinkedList*)logs;
-    freeLinkedList(gameLogs, &freeLog);
+    LinkedListNode* thisNode = gameLogs->head;    
+
+    while(thisNode != NULL)
+    {
+        printLinkedList(gameLogs, &printString);
+        thisNode = thisNode->next;   
+    }
 }
 
 /*TODO*/
-void printLog(void* string)
+void freeLog(void* logs)
+{
+    LinkedList* gameLogs = (LinkedList*)logs;
+    freeLinkedList(gameLogs, &freeString);
+}
+
+/*TODO*/
+void printString(void* string)
 {
     printf("%s\n", (char*)string);
 }
 
 /*TODO*/
-void freeLog(void* string)
+void freeString(void* string)
 {
     free((char*)string);
 }
