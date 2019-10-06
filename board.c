@@ -21,6 +21,12 @@
 #include "board.h"
 #include "linked_list.h"
 
+/* static prototype declarations */
+static int checkAdjacentRec(Board* board, int rIdx, int cIdx, int k);
+static int checkBeneathRec(Board* board, int rIdx, int cIdx, int k);
+static int checkDiagonalUpRec(Board* board, int rIdx, int cIdx, int k);
+static int checkDiagonalDownRec(Board* board, int rIdx, int cIdx, int k);
+
 /* ****************************************************************************
  * NAME:        createBoard
  *
@@ -114,9 +120,131 @@ int insertMove(Board* board, char player, int xx, int yy)
  * EXPORT:      winner (integer)
  * ***************************************************************************/
 int findWinner(Board* board)
-{
-    return 0;
+{   
+    int ii, jj, winner = 0;    
+
+    /*Check along all rows*/
+    ii = 0;
+    while(ii < board->height && winner == 0)
+    {
+        jj = 0;
+        while(jj < board->width && winner == 0)
+        {
+            /*Check match k times in a row from left to right*/
+            winner = checkAdjacentRec(board, ii, jj, board->numMatchingTiles);
+
+            /*Check match k times in a row from top down*/
+            if(winner == 0)
+            {
+                winner = checkBeneathRec(board, ii, jj, board->numMatchingTiles);
+
+                /*Check diagonal up*/
+                if(winner == 0)
+                {
+                    winner = checkDiagonalUpRec(board, ii, jj, board->numMatchingTiles);
+
+                    /*Check diagonal down*/
+                    if(winner == 0)
+                    {
+                        winner = checkDiagonalDownRec(board, ii, jj, board->numMatchingTiles);
+                    }
+                }
+            }
+            jj++;
+        }
+        ii++;
+    }   
+    return winner;
 }
+
+/* ... */
+static int checkAdjacentRec(Board* board, int rIdx, int cIdx, int k)
+{   
+    int winner = 0;
+    int thisElement = board->map[rIdx][cIdx];
+    if(cIdx < board->width - 1) /*Check we aren't going out of bounds*/
+    {
+        if(thisElement == board->map[rIdx][cIdx + 1]) /*Check adjacent*/
+        {
+            if(k > 2) /*Still more to check?*/
+            {
+                winner = checkAdjacentRec(board, rIdx, cIdx + 1, k - 1);
+            }
+            else /*Winner found*/
+            {
+                winner = thisElement;
+            }
+        }
+    }
+    return winner;
+}
+
+/* ... */
+static int checkBeneathRec(Board* board, int rIdx, int cIdx, int k)
+{   
+    int winner = 0;
+    int thisElement = board->map[rIdx][cIdx];
+    if(rIdx < board->height - 1)
+    {
+        if(thisElement == board->map[rIdx + 1][cIdx]) /*Check beneath*/
+        {
+            if(k > 2) /*Still more to check?*/
+            {
+                winner = checkBeneathRec(board, rIdx + 1, cIdx, k - 1);
+            }
+            else /*Winner found*/
+            {
+                winner = thisElement;
+            }
+        }
+    }
+    return winner;
+}
+
+/* ... */
+static int checkDiagonalUpRec(Board* board, int rIdx, int cIdx, int k)
+{   
+    int winner = 0;
+    int thisElement = board->map[rIdx][cIdx];
+    if((rIdx > 0) && (cIdx < board->width - 1))
+    {
+        if(thisElement == board->map[rIdx - 1][cIdx + 1]) /*Check up-right*/
+        {
+            if(k > 2) /*Still more to check?*/
+            {
+                winner = checkDiagonalUpRec(board, rIdx - 1, cIdx + 1, k - 1);
+            }
+            else /*Winner found*/
+            {
+                winner = thisElement;
+            }
+        }
+    }
+    return winner;
+}
+
+/* ... */
+static int checkDiagonalDownRec(Board* board, int rIdx, int cIdx, int k)
+{
+    int winner = 0;
+    int thisElement = board->map[rIdx][cIdx];
+    if((rIdx < board->height - 1) && (cIdx < board->width - 1))
+    {
+        if(thisElement == board->map[rIdx + 1][cIdx + 1]) /*Check down-right*/
+        {
+            if(k > 2) /*Still more to check?*/
+            {
+                winner = checkDiagonalDownRec(board, rIdx + 1, cIdx + 1, k - 1);
+            }
+            else /*Winner found*/
+            {
+                winner = thisElement;
+            }
+        }
+    }
+    return winner; 
+}
+
 
 /* ****************************************************************************
  * NAME:        destroyBoard

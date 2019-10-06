@@ -135,7 +135,7 @@ void mainMenu(char* settingsFileName)
 void playGame(Board* board, LinkedList* log)
 { 
     Log* thisLog; 
-    int err, xx, yy, option, turn = 0;
+    int err, xx, yy, option, turn = 0, winner;
     int playing = TRUE; 
     char player = 'X';
     char location[LOCATION_LEN];
@@ -172,10 +172,27 @@ void playGame(Board* board, LinkedList* log)
                 thisLog = NULL;       
  
                 /* Check for winner */
-
+                winner = findWinner(board);
+                if(winner != 0)
+                {
+                    printf("\n");
+                    displayBoard(board);
+                    playing = FALSE;
+                    printf("\n------------------");
+                    if(winner == 1)
+                    {   
+                        printf("\n| PLAYER X WINS! |\n");
+                    }
+                    else
+                    {
+                        printf("\n| PLAYER O WINS! |\n");
+                    }
+                    printf("------------------\n");
+                } 
                 break;
 
             case 2 : /* Quit */
+                printf("\nDRAW!\n");
                 playing = FALSE;
                 break;
         }
@@ -190,7 +207,6 @@ void playGame(Board* board, LinkedList* log)
             player = 'X';
         }
     } 
-    printf("\nDRAW\n"); /*temp*/
     destroyBoard(board);
 }
 
