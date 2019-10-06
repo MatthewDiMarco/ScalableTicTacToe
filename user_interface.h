@@ -14,16 +14,15 @@
 #include "linked_list.h"
 
 /** 
- * macros and constants 
+ * Macros and Constants 
  */
 
 /* the number of option available in the main menu */
 #define NUM_OPTIONS 5 
 
-/* the number of chars in a log string */
-#define LOG_SIZE 37
-
-/* prototype declarations */
+/** 
+ * Prototype declarations 
+ */
 
 /* ****************************************************************************
  * NAME:        mainMenu
@@ -51,13 +50,4 @@ void playGame(Board* board, LinkedList* log);
 void displayBoard(Board* board);
 
 /* ... */
-void displayLogs(LinkedList* games);
-
-/* ... */
-void freeGame(void* logs);
-
-/* ... */
-void printLog(void* string);
-
-/* ... */
-void freeLog(void* string);
+void displayLogs(LinkedList* listOfGames);

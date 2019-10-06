@@ -75,7 +75,10 @@ void mainMenu(char* settingsFileName)
                      * saving). All game logs will be free'd when we destroy
                      * 'games' at the end of runtime.
                      */
-                    insertLast(games, log); 
+                    if(log->size > 0) /* were any moves made? */
+                    {
+                        insertLast(games, log); 
+                    }
                     log = NULL;
                     break;
 
@@ -90,12 +93,24 @@ void mainMenu(char* settingsFileName)
                     break;
 
                 case 4 : /* Save logs */
-                    printf("\nfunction (4) not implemented yet\n");            
+                    if(games == NULL || games->size < 1)
+                    {
+                        printf("\nNo logs to save\n");
+                    }
+                    else if(saveLogs(games, m, n, k) != -1)
+                    {
+                        printf("\nLogs saved\n");
+                        freeLinkedList(games, &freeGame);
+                        games = createLinkedList(); /*refresh the linked list*/
+                    }            
+                    else
+                    {
+                        printf("\nFailed to save logs\n");
+                    }
                     break;
 
                 case 5 : /* Exit */
                     printf("\ngoodbye...\n\n");
-
                     freeLinkedList(games, &freeGame);
                     running = FALSE;            
                     break;
@@ -112,14 +127,16 @@ void mainMenu(char* settingsFileName)
 /*TODO: add comment; will probs return and import a linked list*/
 void playGame(Board* board, LinkedList* log)
 { 
-    char* thisLog; 
+    Log* thisLog; 
     int err, xx, yy, option, turn = 0;
-    int playing = TRUE, player = 1;
+    int playing = TRUE; 
+    char player = 'X';
+    char location[LOCATION_LEN];
     while(playing == TRUE)
     {
         printf("\n");
         displayBoard(board);
-        printf("\nPLAYER %d's TURN\n\n", player);
+        printf("\nPLAYER %c's TURN\n\n", player);
         turn++;
 
         /* sub menu */
@@ -136,12 +153,14 @@ void playGame(Board* board, LinkedList* log)
                 } 
                 while(err == -1);
 
-                printf("\nPLAYER %d --> (%d,%d)", player, xx, yy);
-               
+                sprintf(location, "(%d,%d)", xx, yy);              
+
                 /* Update log */ 
-                thisLog = (char*)malloc(sizeof(char) * LOG_SIZE);
-                sprintf(thisLog, "Turn: %d\nPlayer: %d\nLocation: (%d,%d)",
-                        turn, player, xx, yy);
+                thisLog = (Log*)malloc(sizeof(Log));
+                thisLog->turn = turn;
+                thisLog->player = player;
+                strcpy(thisLog->location, location);
+    
                 insertLast(log, thisLog);
                 thisLog = NULL;       
  
@@ -155,13 +174,13 @@ void playGame(Board* board, LinkedList* log)
         }
 
         /* Swap player turn */
-        if(player == 1)
+        if(player == 'X')
         {
-            player = 2;
+            player = 'O';
         }
         else
         {
-            player = 1;
+            player = 'X';
         }
     } 
     printf("\nDRAW\n"); /*temp*/
@@ -250,30 +269,8 @@ void displayLogs(LinkedList* listOfGames)
     while(thisNode != NULL)
     {
         game++;
-        printf("GAME %d:\n", game);
-        printLinkedList(thisNode->data, &printLog);
-
+        printf("\nGAME %d:", game);
+        printLinkedList(thisNode->data, &printLog); 
         thisNode = thisNode->next;
     }
-}
-
-/* Used as function pointers for linked lists */
-
-/*TODO*/
-void freeGame(void* logs)
-{
-    LinkedList* gameLogs = (LinkedList*)logs;
-    freeLinkedList(gameLogs, &freeLog);
-}
-
-/*TODO*/
-void printLog(void* string)
-{
-    printf("%s\n", (char*)string);
-}
-
-/*TODO*/
-void freeLog(void* string)
-{
-    free((char*)string);
 }

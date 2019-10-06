@@ -115,6 +115,63 @@ int readSettings(char* file, int* inM, int* inN, int* inK)
 }
 
 /* ****************************************************************************
+ * NAME:        saveLogs
+ *
+ * PURPOSE:     Save all the game logs to a txt file for a given session.
+ *
+ * IMPORTS:     sessionList (LinkedList)
+ * EXPORTS:     status (integer: -1 if error occured)
+ * ***************************************************************************/
+int saveLogs(LinkedList* sessionList, int m, int n, int k)
+{
+    int status = 0, gameNum;
+    LinkedList* game;
+    Log* log;
+    FILE* outfile;
+    outfile = fopen("TEMP_SAVE_NAME", "w");
+    if(outfile == NULL)
+    {
+        perror("There was an error creating the save file");
+        status = -1;        
+    }
+    else
+    {
+        /*Print settings*/
+        fprintf(outfile, "SETTINGS:\n   M=%d\n   N=%d\n   K=%d\n\n", m, n, k);    
+
+        /*Print games*/
+        gameNum = 0;
+        game = (LinkedList*)removeStart(sessionList);
+        while(game != NULL) /*Loop through the games*/
+        {
+            gameNum++;
+            fprintf(outfile, "GAME %d\n", gameNum);
+            log = (Log*)removeStart(game);
+            while(log != NULL) /*Loop through the logs in a given game*/
+            {
+                fprintf(outfile, "   Turn: %d\n   Player: %c\n   Location: %s\n", 
+                        log->turn, log->player, log->location);
+                free(log); /*don't need it anymore*/
+                log = (Log*)removeStart(game);
+                fprintf(outfile, "\n");
+            }
+            freeLinkedList(game, &freeLog); /*data inside is already free*/
+            game = (LinkedList*)removeStart(sessionList);
+        }
+        sessionList = NULL;
+
+        /* Final error checking */
+        if(ferror(outfile))
+        {
+            perror("There was an error closing the save file");
+            status = -1;
+        }
+        fclose(outfile);
+    }
+    return status;
+}
+
+/* ****************************************************************************
  * NAME:        processLine
  *
  * PURPOSE:     Helper for the readSettings() function.
@@ -136,7 +193,7 @@ static int processLine(char* line, int* dupe, int* value, int lineNum)
     {
         /** 
          * Use sscanf to scan the string line for the following: 
-         *    %*[^=] : collect all character until we hit '=', then
+         *    %*[^=] : collect all characters until we hit '=', then
          *             ignore them with the '*' char.
          *    %d : The value we wish to validate.
          */

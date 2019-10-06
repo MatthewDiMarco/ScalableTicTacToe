@@ -68,9 +68,7 @@ void insertStart(LinkedList* list, void* value);
  * NAME:        removeStart
  * 
  * PURPOSE:     To remove and free the frontmost element in the list.
- *              If the list is empty, NULL is returned as the data.
- *              Note: the returned data may (should) be malloced, so 
- *              it must be free'd after return.
+ *              Returns the data, which must be free'd later.
  * 
  * IMPORT:      list (pointer to a linked list)
  * EXPORT:      value (generic pointer)
@@ -92,12 +90,10 @@ void insertLast(LinkedList* list, void* value);
  * NAME:        removeLast
  * 
  * PURPOSE:     To remove and free the tailmost element in the list.
- *              If the list is empty, NULL is returned as the data.
- *              Note: the returned data may (should) be malloced, so 
- *              it must be free'd after return.
+ *              Returns the data, which must be free'd later.
  * 
  * IMPORT:      list (pointer to a linked list)
- * EXPORT:      value (generic pointer)
+ * EXPORT:      none
  * ***************************************************************************/
 void* removeLast(LinkedList* list);
 

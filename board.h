@@ -15,6 +15,9 @@
 #define UPPER 9
 #define LOWER 1
 
+/* the number of chars to be in a location string for the Log struct */
+#define LOCATION_LEN 6
+
 /* typdefs, enums */
 
 #ifndef BOARD
@@ -30,6 +33,14 @@ typedef struct
     int numMatchingTiles;
     int** map;
 } Board;
+
+/* Represents a player's move */
+typedef struct 
+{
+    int turn;
+    char player;
+    char location[LOCATION_LEN]; /* e.g. "(1,1)\0" */
+} Log;
 
 #endif
 
@@ -53,10 +64,10 @@ Board* createBoard(int width, int height, int inNumMatchingTiles);
  *              i.e. if player 1 inputs (0,0), a 1 will be added to element
  *              [0][0] of the array.
  *
- * IMPORT:      board (Board pointer), player coords - xx/yy (integers)
+ * IMPORT:      board (Board pointer), player (char), coords - xx/yy (integers)
  * EXPORT:      result (integer - 0 if success, -1 if collision)
  * ***************************************************************************/
-int insertMove(Board* board, int player, int xx, int yy);
+int insertMove(Board* board, char player, int xx, int yy);
 
 /* ****************************************************************************
  * NAME:        findWinner
@@ -80,3 +91,12 @@ int findWinner(Board* board);
  * EXPORT:      none
  * ***************************************************************************/
 void destroyBoard(Board* board);
+
+/* ... */
+void freeGame(void* game);
+
+/* ... */
+void printLog(void* log);
+
+/* ... */
+void freeLog(void* log);

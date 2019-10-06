@@ -71,9 +71,7 @@ void insertStart(LinkedList* list, void* value)
  * NAME:        removeStart
  * 
  * PURPOSE:     To remove and free the frontmost element in the list.
- *              If the list is empty, NULL is returned as the data.
- *              Note: the returned data may (should) be malloced, so 
- *              it must be free'd after return.
+ *              Return's the data, which must be free'd later.
  * 
  * IMPORT:      list (pointer to a linked list)
  * EXPORT:      value (generic pointer)
@@ -83,14 +81,10 @@ void* removeStart(LinkedList* list)
     LinkedListNode* temp;
     void* value;
 
-    if(list->size < 1) /* empty */
-    {
-        value = NULL;
-    }
-    else
+    if(list->size > 0) /* not empty */
     {
         temp = list->head; /* save old head */
-        value = list->head->data; /* data to be returned */
+        value = list->head->data; /*return*/
         list->head = list->head->next; /* update to new head */
 
         /* if that was the last element, head AND tail should point to null */
@@ -104,14 +98,18 @@ void* removeStart(LinkedList* list)
    
         list->size--;
     }
-
-    return value; 
+    else
+    {
+        value = NULL;
+    }
+    return value;
 }
 
 /* ****************************************************************************
  * NAME:        insertLast
  * 
  * PURPOSE:     To insert a new element at the tail of the list.
+ *              Return's the data, which must be free'd later.
  * 
  * IMPORT:      list (pointer to a linked list), 
  *              value (generic pointer)
@@ -143,23 +141,17 @@ void insertLast(LinkedList* list, void* value)
  * NAME:        removeLast
  * 
  * PURPOSE:     To remove and free the tailmost element in the list.
- *              If the list is empty, NULL is returned as the data.
- *              Note: the returned data may (should) be malloced, so 
- *              it must be free'd after return.
+ *              Also free's the associated data.
  * 
  * IMPORT:      list (pointer to a linked list)
- * EXPORT:      value (generic pointer)
+ * EXPORT:      none
  * ***************************************************************************/
 void* removeLast(LinkedList* list)
 {
     LinkedListNode *node, *prevNode;
     void* value;
 
-    if(list->size < 1) /* empty */
-    {
-         value = NULL;
-    }
-    else
+    if(list->size > 0) /* not empty */
     {
         /* find last and second-last element */
         prevNode = NULL;
@@ -169,9 +161,9 @@ void* removeLast(LinkedList* list)
             prevNode = node;
             node = node->next; 
         }
-        value = node->data; /* data to be returned */
+        value = node->data; /*return*/
         
-        /* delete (free) the node */
+        /* delete (free) the node and data */
         free(node); 
 
         /* update pointers */
@@ -188,7 +180,10 @@ void* removeLast(LinkedList* list)
 
         list->size--;
     }
-
+    else
+    {
+        value = NULL;
+    }
     return value;
 }
 

@@ -10,6 +10,7 @@
  * ***************************************************************************/
 
 /* constants */
+#define MAX_LINE_SIZE 20 /* no integers bigger than 20 digits */
 
 /* typdefs, enums */
 

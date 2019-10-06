@@ -19,6 +19,7 @@
 #include <string.h>
 
 #include "board.h"
+#include "linked_list.h"
 
 /* ****************************************************************************
  * NAME:        createBoard
@@ -66,17 +67,17 @@ Board* createBoard(int width, int height, int inNumMatchingTiles)
  *              i.e. if player 1 inputs (0,0), a 1 will be added to element
  *              [0][0] of the array.
  *
- * IMPORT:      board (Board pointer), player coords - xx/yy (integers)
+ * IMPORT:      board (Board pointer), player (char), coords - xx/yy (integers)
  * EXPORT:      result (integer - 0 if success, -1 if collision/error)
  * ***************************************************************************/
-int insertMove(Board* board, int player, int xx, int yy)
+int insertMove(Board* board, char player, int xx, int yy)
 {
     int result = 0;
 
     /* Validation (zero-based) */
     if((xx < 0 || xx >= board->width) ||
        (yy < 0 || yy >= board->height) ||
-       (player > 2 || player < 1))
+       (player != 'X' && player != 'O'))
     {
         printf("\ninvalid coordinats: (%d,%d)\n", xx, yy);
         result = -1;
@@ -88,7 +89,14 @@ int insertMove(Board* board, int player, int xx, int yy)
     }
     else /* Make insertion */
     {
-        board->map[yy][xx] = player;
+        if(player == 'X')
+        {
+            board->map[yy][xx] = 1;
+        }
+        else
+        {
+            board->map[yy][xx] = 2;
+        }
     }
 
     return result;
@@ -97,8 +105,8 @@ int insertMove(Board* board, int player, int xx, int yy)
 /* ****************************************************************************
  * NAME:        findWinner
  *
- * PURPOSE:     Returns an integer if a winner is determined (1 for player 1,
- *              2 for player 2). Returns 0 if no winner is found.
+ * PURPOSE:     Returns an integer if a winner is determined (1 for player X,
+ *              2 for player O). Returns 0 if no winner is found.
  *              Winner is determined by a player who has K items in a row
  *              on the array.      
  *
@@ -128,4 +136,28 @@ void destroyBoard(Board* board)
     free(board->map);
     free(board);
     board = NULL;
+}
+
+/* Used as function pointers for linked lists */
+
+/*TODO*/
+void freeGame(void* game)
+{
+    LinkedList* gameLogs = (LinkedList*)game;
+    freeLinkedList(gameLogs, &freeLog);
+}
+
+/*TODO*/
+void printLog(void* log)
+{
+    Log* lg = (Log*)log;
+    printf("\n   Turn: %d\n", lg->turn);
+    printf("   Player: %c\n", lg->player);
+    printf("   Location: %s\n", lg->location);
+}
+
+/*TODO*/
+void freeLog(void* log)
+{
+    free((Log*)log);
 }

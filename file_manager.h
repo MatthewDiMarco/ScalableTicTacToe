@@ -9,6 +9,8 @@
  * LAST MOD:    23/09/19 
  * ***************************************************************************/
 
+#include "linked_list.h"
+
 /* macros and constants */
 
 /**
@@ -42,3 +44,13 @@
  * EXPORTS:     status (integer: -1 if error occured)
  * ***************************************************************************/
 int readSettings(char* file, int* inM, int* inN, int* inK);
+
+/* ****************************************************************************
+ * NAME:        saveLogs
+ *
+ * PURPOSE:     Save all the game logs to a txt file for a given session.
+ *
+ * IMPORTS:     sessionList (LinkedList)
+ * EXPORTS:     status (integer: -1 if error occured)
+ * ***************************************************************************/
+int saveLogs(LinkedList* sessionList, int m, int n, int k);
