@@ -18,6 +18,7 @@
 #include "file_manager.h"
 #include "linked_list.h"
 #include "board.h"
+#include "time.h"
 
 /* static function declarations */
 static int processLine(char* line, int* dupe, int* value, int lineNum);
@@ -128,13 +129,29 @@ int saveLogs(LinkedList* sessionList, int m, int n, int k)
     LinkedList* game;
     Log* log;
     FILE* outfile;
-    outfile = fopen("TEMP_SAVE_NAME", "w");
+    char flname[30];
+
+    /*CITE techiedelight.com!!*/
+    /*Generate file name*/
+    time_t now;
+    struct tm* local;
+
+    /*Get curr time*/
+    time(&now);
+    local = localtime(&now);     
+
+    /*Write to string*/
+    sprintf(flname, "MNK_%d-%d-%d_%d-%d_%d-%d.log",
+    m, n, k, local->tm_hour, local->tm_min, local->tm_mday, local->tm_mon);
+
+    /*Create file*/
+    outfile = fopen(flname, "w");
     if(outfile == NULL)
     {
         perror("There was an error creating the save file");
         status = -1;        
     }
-    else
+    else /*Begin writing*/
     {
         /*Print settings*/
         fprintf(outfile, "SETTINGS:\n   M=%d\n   N=%d\n   K=%d\n\n", m, n, k);    

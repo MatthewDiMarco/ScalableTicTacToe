@@ -79,3 +79,5 @@ testSettings :
 clean :
 		rm -f $(EXEC) $(OBJ)
 
+cleanLogs :	
+		rm -f MNK*.log

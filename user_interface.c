@@ -88,8 +88,15 @@ void mainMenu(char* settingsFileName)
                     break;
 
                 case 3 : /* View logs */
-                    printf("\nSETTINGS:\n   M=%d\n   N=%d\n   K=%d\n",m, n, k);    
-                    displayLogs(games);     
+                    if(games->size < 1)
+                    {
+                        printf("\nNo logs currently in the system\n");
+                    }
+                    else
+                    {
+                        printf("\nSETTINGS:\n   M=%d\n   N=%d\n   K=%d\n",m, n, k);    
+                        displayLogs(games);     
+                    }
                     break;
 
                 case 4 : /* Save logs */
