@@ -44,6 +44,7 @@ int readInt(char msg[], int lower, int upper)
         if((value < lower) || (value > upper)) 
         {
             printf("\ninput must be between %d and %d\n", lower, upper);
+            value = lower - 1;
         }
     }
 

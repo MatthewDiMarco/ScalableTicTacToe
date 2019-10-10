@@ -148,7 +148,16 @@ void playGame(Board* board, LinkedList* log)
 
         /* sub menu */
         printf("1: Take turn\n2: Quit\n");
-        option = readInt("--> ", 1, 2);
+        err = -1;
+        do
+        {
+            option = readInt("--> ", 1, 2);
+            if(option != 0) /*if an error occured, 0 is returned*/
+            {
+                err = 0;   
+            }
+        }
+        while (err == -1);
         switch(option)
         {
             case 1 : /* Take turn */
