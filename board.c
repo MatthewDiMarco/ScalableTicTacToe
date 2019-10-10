@@ -121,7 +121,7 @@ int insertMove(Board* board, char player, int xx, int yy)
  * ***************************************************************************/
 int findWinner(Board* board)
 {   
-    int ii, jj, winner = 0;    
+    int ii, jj, winner = 0, k = board->numMatchingTiles;    
 
     /*Check along all rows*/
     ii = 0;
@@ -130,23 +130,27 @@ int findWinner(Board* board)
         jj = 0;
         while(jj < board->width && winner == 0)
         {
-            /*Check match k times in a row from left to right*/
-            winner = checkAdjacentRec(board, ii, jj, board->numMatchingTiles);
-
-            /*Check match k times in a row from top down*/
-            if(winner == 0)
+            /*Is there a potential win here? If not, skip*/
+            if(board->map[ii][jj] != 0)
             {
-                winner = checkBeneathRec(board, ii, jj, board->numMatchingTiles);
+                /*Check match k times in a row from left to right*/
+                winner = checkAdjacentRec(board, ii, jj, k);
 
-                /*Check diagonal up*/
+                /*Check match k times in a row from this cell down*/
                 if(winner == 0)
                 {
-                    winner = checkDiagonalUpRec(board, ii, jj, board->numMatchingTiles);
+                    winner = checkBeneathRec(board, ii, jj, k);
 
-                    /*Check diagonal down*/
+                    /*Check diagonal up*/
                     if(winner == 0)
                     {
-                        winner = checkDiagonalDownRec(board, ii, jj, board->numMatchingTiles);
+                        winner = checkDiagonalUpRec(board, ii, jj, k);
+
+                        /*Check diagonal down*/
+                        if(winner == 0)
+                        {
+                            winner = checkDiagonalDownRec(board, ii, jj, k);
+                        }
                     }
                 }
             }

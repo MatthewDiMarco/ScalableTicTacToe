@@ -104,6 +104,14 @@ int readSettings(char* file, int* inM, int* inN, int* inK)
             status = -1;
         }
 
+        /* Check that K is <= M & N (possible to win?) */
+        if(((mFound == TRUE) && (nFound == TRUE) && (kFound == TRUE)) && 
+           ((*inK > *inM) && (*inK > *inN)))
+        {
+            printf("K must be less than or equal to M, N or both\n");
+            status = -1;
+        }
+
         /* final error checking */
         if(ferror(settings))
         {

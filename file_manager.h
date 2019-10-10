@@ -17,7 +17,7 @@
  * Describes the length of a line in a valid settings file (including new
  * line character).
  */
-#define LENGTH_OF_SETTINGS 6
+#define LENGTH_OF_SETTINGS 8
 
 /**
  * These constants can be used with integers to model booleans.

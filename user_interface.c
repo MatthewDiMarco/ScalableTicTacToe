@@ -153,10 +153,13 @@ void playGame(Board* board, LinkedList* log)
         {
             case 1 : /* Take turn */
 
+                err = -1;
                 do /* keep reading coords until valid */
                 {
-                    readCoords(&xx, &yy);
-                    err = insertMove(board, player, xx, yy);
+                    if(readCoords(&xx, &yy) != -1)
+                    {
+                        err = insertMove(board, player, xx, yy);
+                    }
                 } 
                 while(err == -1);
 
@@ -223,10 +226,15 @@ void displayBoard(Board* board)
     int ii, jj;
 
     /* print upper border */
-    printf("==");
+    printf(" ");
+    for(ii = 0; ii < board->width; ii++)
+    {
+        printf(" %2d ", ii); /*print numbers*/
+    }
+    printf("\n==");
     for(ii = 0; ii < board->width; ii++) 
     {
-        printf("====");
+        printf("===="); /*print bar*/
     }
     printf("=\n");
 
@@ -252,7 +260,7 @@ void displayBoard(Board* board)
                 printf(" O |");
             }
         }
-        printf("|\n");
+        printf("| %2d\n", ii);
        
         /* if we're on the last iteration, we don't need an inner border */
         if(ii != board->height - 1)

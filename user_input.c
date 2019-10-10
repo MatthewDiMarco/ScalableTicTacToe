@@ -28,27 +28,24 @@ int readInt(char msg[], int lower, int upper)
 {
     char garbage[MAX_LINE_SIZE], input[MAX_LINE_SIZE]; 
     int value = lower - 1;
-    do
+
+    /* prompt and get user input for analyzing */
+    printf("%s", msg);
+    fgets(input, sizeof(input), stdin); 
+    if(sscanf(input, "%d%[^\n]", &value, garbage) != 1)
     {
-        /* prompt and get user input for analyzing */
-        printf("%s", msg);
-        fgets(input, sizeof(input), stdin); 
-        if(sscanf(input, "%d%[^\n]", &value, garbage) != 1)
+        /* If we got here, the user entered excess (invalid) chars */
+        printf("\ninput must be a whole number\n");
+        value = lower - 1; /* return invalid value */
+    }
+    else
+    {
+        /* Here if the user's input is valid, but out of range */
+        if((value < lower) || (value > upper)) 
         {
-            /* If we got here, the user entered excess (invalid) chars */
-            printf("\ninput must be a whole number\n\n");
-            value = lower - 1; /* stay in loop */
-        }
-        else
-        {
-            /* Here of the user's input is valid, but out of range */
-            if((value < lower) || (value > upper)) 
-            {
-                printf("\ninput must be between %d and %d\n\n", lower, upper);
-            }
+            printf("\ninput must be between %d and %d\n", lower, upper);
         }
     }
-    while((value < lower) || (value > upper));
 
     return value;
 }
@@ -56,17 +53,26 @@ int readInt(char msg[], int lower, int upper)
 /* ****************************************************************************
  * NAME:        readCoords
  *
- * PURPOSE:     To read in the x and y coordinates for a board.
+ * PURPOSE:     To read in the x and y coordinates for a board via format <x,y>
+ *              returns -1 if errors occur, 0 otherwise.
  *
  * IMPORTS:     xx, yy (integer pointers)
  * EXPORTS:     none
  * ***************************************************************************/
-void readCoords(int* xx, int* yy)
+int readCoords(int* xx, int* yy)
 {
-    int ix, iy;
-    printf("\nSelect a tile (x,y)\n");   
-    ix = readInt("x -> ", 0, 9);
-    iy = readInt("y -> ", 0, 9);
-    *xx = ix;
-    *yy = iy;
+    int status = 0;    
+
+    /*coord can be upto 8 char long ( e.g. "<xxx>,<yyy>\0" )*/
+    char garbage[MAX_LINE_SIZE], input[MAX_LINE_SIZE];
+ 
+    printf("\nEnter tile coordinates with format \"x,y\"\n--> ");   
+    fgets(input, sizeof(input), stdin); 
+    if(sscanf(input, "%d,%d%[^\n]", xx, yy, garbage) != 2)
+    {
+        printf("\nBad format. Try something like --> 2,3\n");
+        status = -1;
+    }
+
+    return status;   
 }

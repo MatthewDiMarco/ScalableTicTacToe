@@ -12,8 +12,8 @@
 /* constants */
 
 /* The upper and lower bound values (inclusive) for the game settings */
-#define UPPER 9
-#define LOWER 1
+#define UPPER 999
+#define LOWER 3
 
 /* the number of chars to be in a location string for the Log struct */
 #define LOCATION_LEN 6
