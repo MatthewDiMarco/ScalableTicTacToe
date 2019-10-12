@@ -19,7 +19,6 @@
 #include <string.h>
 
 #include "board.h"
-#include "linked_list.h"
 
 /* static prototype declarations */
 static int checkAdjacentRec(Board* board, int rIdx, int cIdx, int k);
@@ -85,12 +84,12 @@ int insertMove(Board* board, char player, int xx, int yy)
        (yy < 0 || yy >= board->height) ||
        (player != 'X' && player != 'O'))
     {
-        printf("\ninvalid coordinats: (%d,%d)\n", xx, yy);
+        /* out of bounds */
         result = -1;
     }
     else if(board->map[yy][xx] != 0) /* Collision checking */
     {
-        printf("\nposition (%d,%d) is taken\n", xx, yy);
+        /* occupied */
         result = -1;
     }
     else /* Make insertion */
@@ -271,13 +270,6 @@ void destroyBoard(Board* board)
 }
 
 /* Used as function pointers for linked lists */
-
-/*TODO*/
-void freeGame(void* game)
-{
-    LinkedList* gameLogs = (LinkedList*)game;
-    freeLinkedList(gameLogs, &freeLog);
-}
 
 /*TODO*/
 void printLog(void* log)

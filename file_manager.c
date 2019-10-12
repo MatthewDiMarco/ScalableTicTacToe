@@ -14,11 +14,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
+#include <time.h>
 
 #include "file_manager.h"
 #include "linked_list.h"
 #include "board.h"
-#include "time.h"
 
 /* static function declarations */
 static int processLine(char* line, int* dupe, int* value, int lineNum);
@@ -139,7 +139,12 @@ int saveLogs(LinkedList* sessionList, int m, int n, int k)
     FILE* outfile;
     char flname[30];
 
-    /*CITE techiedelight.com!!*/
+    /** 
+     * Acknowledgements: techiedelight.com for the tutorial on accessing 
+     * system time/date.
+     * Ref: https://www.techiedelight.com/print-current-date-and-time-in-c/
+     */   
+
     /*Generate file name*/
     time_t now;
     struct tm* local;

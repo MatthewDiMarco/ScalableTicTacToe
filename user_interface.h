@@ -18,7 +18,14 @@
  */
 
 /* the number of option available in the main menu */
-#define NUM_OPTIONS 5 
+/* editor mode will have an extra 6th option for editing settings */
+#ifdef EDITOR
+#define NUM_OPTIONS 6
+#endif
+
+#ifndef EDITOR
+#define NUM_OPTIONS 5
+#endif
 
 /** 
  * Prototype declarations 
@@ -51,3 +58,6 @@ void displayBoard(Board* board);
 
 /* ... */
 void displayLogs(LinkedList* listOfGames);
+
+/* ... */
+void freeGame(void* game);

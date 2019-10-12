@@ -14,12 +14,18 @@
  # 					3) Editor: settings variables can be modified @ runtime. 
 ##
 
+
 # variables
 
-CC 		= gcc
-CFLAGS 	= -Wall -ansi -pedantic -Werror
-OBJ 	= main.o user_input.o user_interface.o file_manager.o board.o linked_list.o 
-EXEC 	= TicTacToe
+CC 			= gcc
+CFLAGS 		= -Wall -ansi -pedantic -Werror
+OBJ 		= main.o user_input.o user_interface.o file_manager.o board.o linked_list.o 
+OBJ_TEST_LL = linked_list.o LinkedListTest.o
+OBJ_TEST_BR = board.o BoardTest.o
+EXEC 		= TicTacToe
+EXEC_LL     = test_ll
+EXEC_BR     = test_board
+
 
 # conditional compilation
 
@@ -29,12 +35,17 @@ DEBUG : clean $(EXEC)
 endif
 
 ifdef SECRET
+CFLAGS += -D SECRET=1
+SECRET : clean $(EXEC)
 endif
 
 ifdef EDITOR
+CFLAGS += -D EDITOR=1
+EDITOR : clean $(EXEC)
 endif
 
-# rules
+
+# rules - production code
 
 $(EXEC) : $(OBJ)
 		$(CC) $(OBJ) -o $(EXEC)
@@ -57,27 +68,34 @@ board.o : board.c board.h linked_list.h
 linked_list.o : linked_list.c linked_list.h
 		$(CC) linked_list.c -c $(CFLAGS)
 
+
+# rules - test code
+
+tests : $(OBJ_TEST_LL) $(OBJ_TEST_BR) 
+		$(CC) $(OBJ_TEST_LL) -o $(EXEC_LL)
+		$(CC) $(OBJ_TEST_BR) -o $(EXEC_BR)
+
+LinkedListTest.o : LinkedListTest.c linked_list.h
+		$(CC) LinkedListTest.c -c $(CFLAGS)
+
+BoardTest.o : BoardTest.c board.h
+		$(CC) BoardTest.c -c $(CFLAGS)
+
+
+# run / clean rules
+
 run :
 		./$(EXEC) settings.txt
 
 runVal : 
 		valgrind ./$(EXEC) settings.txt
 
-# all should fail except for the last two
-testSettings : 
-		./$(EXEC) TestSettingsFiles/format1	
-		./$(EXEC) TestSettingsFiles/format2
-		./$(EXEC) TestSettingsFiles/format3
-		./$(EXEC) TestSettingsFiles/negative
-		./$(EXEC) TestSettingsFiles/duplicates
-		./$(EXEC) TestSettingsFiles/missing
-		./$(EXEC) TestSettingsFiles/empty
-		./$(EXEC) TestSettingsFiles/idontexist
-		echo 5 | ./$(EXEC) TestSettingsFiles/backwards 
-		echo 5 | ./$(EXEC) TestSettingsFiles/lowercase
+runTests :
+		valgrind ./$(EXEC_LL)
+		valgrind ./$(EXEC_BR)
 
 clean :
-		rm -f $(EXEC) $(OBJ)
+		rm -f $(EXEC) $(EXEC_LL) $(EXEC_BR) *.o
 
 cleanLogs :	
 		rm -f MNK*.log

@@ -38,3 +38,14 @@ int readInt(char msg[], int lower, int upper);
  * EXPORTS:     none
  * ***************************************************************************/
 int readCoords(int* xx, int* yy);
+
+/* ****************************************************************************
+ * NAME:        readMNK
+ *
+ * PURPOSE:     To read and validate the MNK game settings from the terminal
+ *              via keyboard input. (Only used in editor mode)
+ *
+ * IMPORTS:     inM, inN, inK (integer pointers)
+ * EXPORTS:     none
+ * ***************************************************************************/
+void readMNK(int* inM, int* inN, int* inK);

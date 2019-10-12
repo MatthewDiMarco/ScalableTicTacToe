@@ -93,9 +93,6 @@ int findWinner(Board* board);
 void destroyBoard(Board* board);
 
 /* ... */
-void freeGame(void* game);
-
-/* ... */
 void printLog(void* log);
 
 /* ... */

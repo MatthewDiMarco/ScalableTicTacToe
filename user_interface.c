@@ -35,11 +35,15 @@ void mainMenu(char* settingsFileName)
 {
     LinkedList *games = NULL, *log = NULL;
     int option, m, n, k, ii, running;
-    char* ops[] = { "1: Start new game\n", 
-                    "2: View settings\n",
-                    "3: View logs\n",
-                    "4: Save logs\n",
-                    "5: Exit\n" };
+    char* ops[NUM_OPTIONS];
+    ops[0] = "1: Start new game\n";
+    ops[1] = "2: View settings\n";
+    ops[2] = "3: View logs\n";
+    ops[3] = "4: Save logs\n";
+    ops[4] = "5: Exit\n";
+    #ifdef EDITOR
+    ops[5] = "6: Edit settings\n";
+    #endif
 
     /* validate settings file */
     if(readSettings(settingsFileName, &m, &n, &k) == -1)
@@ -74,10 +78,15 @@ void mainMenu(char* settingsFileName)
                      * do NOT free the log (we want to keep it for displaying/
                      * saving). All game logs will be free'd when we destroy
                      * 'games' at the end of runtime.
+                     * Only free log if no moves were made.
                      */
                     if(log->size > 0) /* were any moves made? */
                     {
                         insertLast(games, log); 
+                    }
+                    else
+                    {
+                        free(log);
                     }
                     log = NULL;
                     break;
@@ -100,6 +109,7 @@ void mainMenu(char* settingsFileName)
                     break;
 
                 case 4 : /* Save logs */
+                    #ifndef SECRET
                     if(games == NULL || games->size < 1)
                     {
                         printf("\nNo logs to save\n");
@@ -114,6 +124,12 @@ void mainMenu(char* settingsFileName)
                     {
                         printf("\nFailed to save logs\n");
                     }
+                    #endif
+                    #ifdef SECRET
+                    printf("\nYou are playing in SECRET mode: cannot save logs.\n");
+                    printf("To regain this ability, recompile normally.\n");
+                    #endif
+
                     break;
 
                 case 5 : /* Exit */
@@ -121,6 +137,12 @@ void mainMenu(char* settingsFileName)
                     freeLinkedList(games, &freeGame);
                     running = FALSE;            
                     break;
+
+                #ifdef EDITOR
+                case 6 : /* Edit mnk */
+                    readMNK(&m, &n, &k);
+                    break;
+                #endif
 
                 default : 
                     /* can't get here */ 
@@ -154,7 +176,7 @@ void playGame(Board* board, LinkedList* log)
             option = readInt("--> ", 1, 2);
             if(option != 0) /*if an error occured, 0 is returned*/
             {
-                err = 0;   
+                err = 0;
             }
         }
         while (err == -1);
@@ -168,6 +190,10 @@ void playGame(Board* board, LinkedList* log)
                     if(readCoords(&xx, &yy) != -1)
                     {
                         err = insertMove(board, player, xx, yy);
+                        if(err == -1)
+                        {
+                            printf("\nPosition (%d,%d) is out of bounds or taken\n", xx, yy);
+                        }
                     }
                 } 
                 while(err == -1);
@@ -313,4 +339,11 @@ void displayLogs(LinkedList* listOfGames)
         printLinkedList(thisNode->data, &printLog); 
         thisNode = thisNode->next;
     }
+}
+
+/*TODO*/
+void freeGame(void* game)
+{
+    LinkedList* gameLogs = (LinkedList*)game;
+    freeLinkedList(gameLogs, &freeLog);
 }

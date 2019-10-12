@@ -13,6 +13,7 @@
 #include <string.h>
 
 #include "user_input.h"
+#include "board.h"
 
 /* ****************************************************************************
  * NAME:        readInt
@@ -76,4 +77,46 @@ int readCoords(int* xx, int* yy)
     }
 
     return status;   
+}
+
+/* ****************************************************************************
+ * NAME:        readMNK
+ *
+ * PURPOSE:     To read and validate the MNK game settings from the terminal
+ *              via keyboard input. (Only used in editor mode)
+ *
+ * IMPORTS:     inM, inN, inK (integer pointers)
+ * EXPORTS:     none
+ * ***************************************************************************/
+void readMNK(int* inM, int* inN, int* inK)
+{
+    int status = 0;
+    char garbage[MAX_LINE_SIZE], input[MAX_LINE_SIZE];
+
+    do
+    {
+        printf("\nEnter game settings with format \"m,n,k\"\n--> ");   
+        fgets(input, sizeof(input), stdin); 
+        if(sscanf(input, "%d,%d,%d%[^\n]", inM, inN, inK, garbage) != 3)
+        {
+            printf("\nBad format. Try something like --> 4,5,3\n");
+            status = -1;
+        }
+
+        /* validate the settings */
+        else if(((*inM < LOWER) || (*inM > UPPER)) ||
+                ((*inN < LOWER) || (*inN > UPPER)) ||
+                ((*inK < LOWER) || ((*inK > *inM) && (*inK > *inN))))
+        {
+            printf("\nOne or more settings out of range.\n");
+            printf("Values should be between %d and %d.\n", LOWER, UPPER);
+            printf("K should be no greater than both M and N.\n");
+            status = -1; 
+        }
+        else
+        {       
+            status = 0;
+        } 
+    }
+    while(status == -1); 
 }
