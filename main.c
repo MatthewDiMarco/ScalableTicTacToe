@@ -1,5 +1,6 @@
 /* ****************************************************************************
  * FILE:        main.c
+ * CREATED:     29/08/19
  * AUTHOR:      Matthew Di Marco
  * UNIT:        UNIX and C programming (COMP1000)
  *
@@ -16,6 +17,7 @@
  *              is called and the settings file name is passed over to it.
  *
  * LAST MOD:    22/09/19 
+ * MOD BY:      Matthew Di Marco
  * ***************************************************************************/
 #include <stdio.h>
 

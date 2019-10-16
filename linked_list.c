@@ -4,10 +4,10 @@
  * AUTHOR:      Matthew Di Marco
  * UNIT:        UNIX and C programming (COMP1000)
  * 
- * PURPOSE:     A linked list structure for dynamically storing generic data
- *              in a series of nodes using void pointers.
+ * PURPOSE:     A double-ended, singly-linked list structure for dynamically 
+ *              storing generic data in a series of nodes using void pointers.
  *
- * LAST MOD:    29/09/19
+ * LAST MOD:    12/10/19
  * MOD BY:      Matthew Di Marco
  * ***************************************************************************/
 #include <stdio.h>

@@ -5,31 +5,37 @@
  * UNIT:        UNIX and C programming (COMP1000)
  *
  * PURPOSE:     Header file for generic linked list.
- *              Contains structs for a list node and the list itself, as well
- *              as all function declarations.
  *
- * LAST MOD:    29/09/19
+ * LAST MOD:    12/10/19
  * MOD BY:      Matthew Di Marco
  * ***************************************************************************/
 
 /** 
- * Structs and Typedefs 
+ * Structs and typedefs 
  */
 
-#ifndef LINKED_LIST_H
-#define LINKED_LIST_H
+#ifndef LL
+#define LL
 
-/* function pointer for freeing and printing */
+/** 
+ * Function pointer for handling generic list data (i.e. freeing and printing)
+ */
 typedef void (*DATA_FUNC)(void* data);
 
-/* a list node */
+/** 
+ * A node in the list.
+ * Contains a pointer to a value and a reference to the next node.
+ */
 typedef struct LinkedListNode 
 {
     void* data;
     struct LinkedListNode* next;
 } LinkedListNode;
 
-/* the list itself */
+/**
+ * The list itself.
+ * Contains references to the beginning and end of list.
+ */
 typedef struct 
 {
     int size;

@@ -3,7 +3,7 @@
  # AUTHOR:		Matthew Di Marco
  # CREATED:		22/09/19
  # -----
- # MODIFIED:	22/09/19
+ # MODIFIED:	13/10/19
  # BY			Matthew Di Marco
  # -----
  # PURPOSE:		Makefile for the 'TicTacToe' C game.
@@ -53,16 +53,16 @@ $(EXEC) : $(OBJ)
 main.o : main.c user_interface.h
 		$(CC) main.c -c $(CFLAGS)
 
-user_input.o : user_input.c user_input.h
+user_input.o : user_input.c user_input.h board.h
 		$(CC) user_input.c -c $(CFLAGS)
 
-user_interface.o : user_interface.c user_interface.h
+user_interface.o : user_interface.c user_interface.h linked_list.h board.h user_input.h 
 		$(CC) user_interface.c -c $(CFLAGS)
 
 file_manager.o : file_manager.c file_manager.h linked_list.h 
 		$(CC) file_manager.c -c $(CFLAGS)
 
-board.o : board.c board.h linked_list.h
+board.o : board.c board.h
 		$(CC) board.c -c $(CFLAGS)
 
 linked_list.o : linked_list.c linked_list.h

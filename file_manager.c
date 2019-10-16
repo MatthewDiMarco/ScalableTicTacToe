@@ -3,10 +3,8 @@
  * AUTHOR:      Matthew Di Marco
  * UNIT:        UNIX and C programming (COMP1000)
  *
- * PURPOSE:     Contains functionality for all file reading and writing, 
- *              including: 
- *               -> loading game settings
- *               -> saving logs
+ * PURPOSE:     Responsible for all file reading and writing, including saving
+ *              of log files and reading of game settings.
  *
  * LAST MOD:    28/09/19 
  * ***************************************************************************/
@@ -19,8 +17,9 @@
 #include "file_manager.h"
 #include "linked_list.h"
 #include "board.h"
+#include "user_interface.h"
 
-/* static function declarations */
+/* static prototypes */
 static int processLine(char* line, int* dupe, int* value, int lineNum);
 
 /* ****************************************************************************
@@ -127,8 +126,17 @@ int readSettings(char* file, int* inM, int* inN, int* inK)
  * NAME:        saveLogs
  *
  * PURPOSE:     Save all the game logs to a txt file for a given session.
+ *              The name of the file will be of the format: 
  *
- * IMPORTS:     sessionList (LinkedList)
+ *                  MNK_m-n-k_hour-min_day-month.log
+ *
+ *              <time.h> is used to capture the system's current time.
+ *
+ *              Acknowledgements: techiedelight.com for the tutorial on 
+ *              accessing system time/date.
+ *              Ref: https://www.techiedelight.com/print-current-date-and-time-in-c/
+ *
+ * IMPORTS:     sessionList (LinkedList), settings(m-n-k) (integers)
  * EXPORTS:     status (integer: -1 if error occured)
  * ***************************************************************************/
 int saveLogs(LinkedList* sessionList, int m, int n, int k)
@@ -138,12 +146,6 @@ int saveLogs(LinkedList* sessionList, int m, int n, int k)
     Log* log;
     FILE* outfile;
     char flname[30];
-
-    /** 
-     * Acknowledgements: techiedelight.com for the tutorial on accessing 
-     * system time/date.
-     * Ref: https://www.techiedelight.com/print-current-date-and-time-in-c/
-     */   
 
     /*Generate file name*/
     time_t now;
@@ -209,6 +211,7 @@ int saveLogs(LinkedList* sessionList, int m, int n, int k)
  *                  -> this settings has not already been read (duplicate)
  *                  -> the associated value is a positive integer between the
  *                     appropriate bounds.
+ *
  *              Should an error occur, a message will be printed and the
  *              function will return -1 to indicate a failure.
  *

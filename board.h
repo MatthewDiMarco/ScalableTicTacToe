@@ -1,31 +1,37 @@
 /* ****************************************************************************
  * FILE:        board.h
+ * CREATED:     27/09/19
  * AUTHOR:      Matthew Di Marco
  * UNIT:        UNIX and C programming (COMP1000)
  *
- * PURPOSE:     Contains definitions of prototypes and macros used inside
- *              of board.h
+ * PURPOSE:     Header file for board.c
  *
- * LAST MOD:    28/09/19 
+ * LAST MOD:    12/10/19 
+ * MOD BY:      Matthew Di Marco
  * ***************************************************************************/
 
-/* constants */
+/**
+ * Constants
+ */
 
 /* The upper and lower bound values (inclusive) for the game settings */
 #define UPPER 999
 #define LOWER 3
 
-/* the number of chars to be in a location string for the Log struct */
-#define LOCATION_LEN 6
+/* The number of chars to be in a location string for the Log struct */
+#define LOCATION_LEN 9
 
-/* typdefs, enums */
+/**
+ * Structs and typedefs
+ */
 
 #ifndef BOARD
 #define BOARD
 
-/* structs */
-
-/* contains the board's array */
+/**
+ * Contains all dimension details of the board, and a map (matrix).
+ * Use the createBoard() function to allocate memory for the 2d array.
+ */
 typedef struct 
 {
     int width;
@@ -34,17 +40,11 @@ typedef struct
     int** map;
 } Board;
 
-/* Represents a player's move */
-typedef struct 
-{
-    int turn;
-    char player;
-    char location[LOCATION_LEN]; /* e.g. "(1,1)\0" */
-} Log;
-
 #endif
 
-/* prototypes */
+/**
+ * Prototype declarations
+ */
 
 /* ****************************************************************************
  * NAME:        createBoard
@@ -72,10 +72,29 @@ int insertMove(Board* board, char player, int xx, int yy);
 /* ****************************************************************************
  * NAME:        findWinner
  *
- * PURPOSE:     Returns an integer if a winner is determined (1 for player 1,
- *              2 for player 2). Returns 0 if no winner is found.
+ * PURPOSE:     Returns an integer if a winner is determined (1 for player X,
+ *              2 for player O). Returns 0 if no winner is found.
  *              Winner is determined by a player who has K items in a row
  *              on the array.      
+ *
+ *              Achieved using recursion. Loop through each element, stoping at
+ *              ones where the values is not 0. Check the elements at: upper
+ *              right, right, lower right, directly beneath. Because we sweep
+ *              from left to right, top-down through the array, there is no
+ *              need to check the elements behind the current element (already
+ *              been checked) 
+ *              (see below diagram for visualization, where * is where we check 
+ *              from X).
+ *
+ *
+ *                              =============
+ *                              |   |   | * |
+ *                              -------------
+ *                              |   | X | * |
+ *                              -------------
+ *                              |   | * | * |
+ *                              =============
+ *
  *
  * IMPORT:      board (Board pointer)
  * EXPORT:      winner (integer)
@@ -91,9 +110,3 @@ int findWinner(Board* board);
  * EXPORT:      none
  * ***************************************************************************/
 void destroyBoard(Board* board);
-
-/* ... */
-void printLog(void* log);
-
-/* ... */
-void freeLog(void* log);

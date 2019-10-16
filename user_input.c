@@ -1,12 +1,14 @@
 /* ****************************************************************************
  * FILE:        user_input.c
+ * CREATED:     29/08/19
  * AUTHOR:      Matthew Di Marco
  * UNIT:        UNIX and C programming (COMP1000)
  *
  * PURPOSE:     Contains functions for retrieving, modifying and returning/
  *              exporting all input from the user via the keyboard.
  *
- * LAST MOD:    23/09/19 
+ * LAST MOD:    12/10/19
+ * MOD BY:      Matthew Di Marco 
  * ***************************************************************************/
 #include <stdio.h>
 #include <stdlib.h>

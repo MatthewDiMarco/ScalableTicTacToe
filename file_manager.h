@@ -1,35 +1,30 @@
 /* ****************************************************************************
  * FILE:        file_manager.h
+ * CREATED:     29/08/19
  * AUTHOR:      Matthew Di Marco
  * UNIT:        UNIX and C programming (COMP1000)
  *
- * PURPOSE:     Contains definitions of prototypes and macros used inside
- *              of file_manager.h
+ * PURPOSE:     Header file for file_manager.c
  *
- * LAST MOD:    23/09/19 
+ * LAST MOD:    12/10/19
+ * MOD BY:      Matthew Di Marco
  * ***************************************************************************/
 #include "linked_list.h"
 
-/* macros and constants */
-
 /**
- * Describes the length of a line in a valid settings file (including new
- * line character).
+ * Constants
  */
+
+/* Describes the length of a line in a settings file (upto 3 digits) */
 #define LENGTH_OF_SETTINGS 8
 
-/**
- * These constants can be used with integers to model booleans.
- * (Ref: Lecture 2: Environments - slide 15)
- */
+/* These constants can be used with integers to model booleans. */
 #define FALSE 0
 #define TRUE !FALSE
 
-/* typdefs, enums */
-
-/* structs */
-
-/* prototype declarations*/
+/**
+ * Prototype declarations
+ */
 
 /* ****************************************************************************
  * NAME:        readSettings

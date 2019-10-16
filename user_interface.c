@@ -5,10 +5,10 @@
  * UNIT:        UNIX and C programming (COMP1000)
  *
  * PURPOSE:     Contains functions for outputting the central menu and sub
- *              menus. Also contains functionality for displaying various 
- *              graphics to the terminal, such as the tic-tac-toe N*M board.
+ *              menus. Also contains functionality for displaying different 
+ *              graphics to the terminal, such as the TicTacToe board.
  *
- * LAST MOD:    28/09/19
+ * LAST MOD:    12/10/19
  * MOD BY:      Matthew Di Marco 
  * ***************************************************************************/
 #include <stdio.h>
@@ -35,45 +35,48 @@ void mainMenu(char* settingsFileName)
 {
     LinkedList *games = NULL, *log = NULL;
     int option, m, n, k, ii, running;
+
     char* ops[NUM_OPTIONS];
     ops[0] = "1: Start new game\n";
     ops[1] = "2: View settings\n";
     ops[2] = "3: View logs\n";
     ops[3] = "4: Save logs\n";
     ops[4] = "5: Exit\n";
+
+    /* Extra op for EDITOR mode */
     #ifdef EDITOR
     ops[5] = "6: Edit settings\n";
     #endif
 
-    /* validate settings file */
+    /* Validate settings file */
     if(readSettings(settingsFileName, &m, &n, &k) == -1)
     {
         printf("failed to read %s: shutting down...\n\n", settingsFileName);
     }
-    else /* if settings are ok, enter main loop */
+    else /* If settings are ok, enter main loop */
     {
         printf("\n  ---Welcome---\n");
         games = createLinkedList();
         running = TRUE;
         do
         {
-            /* print menu */
+            /* Print menu */
             printf("\nSelect an option\n----------------\n");
             for(ii = 0; ii < NUM_OPTIONS; ii++)
             {
                 printf(ops[ii]);
             }
 
-            /* get user input and execute option */
+            /* Get user input and execute option */
             option = readInt("--> ", 1, NUM_OPTIONS);
             switch(option)
             {
                 case 1 : /* Start new game */  
-                    log = createLinkedList(); 
+                    log = createLinkedList(); /* Capture moves for this game */
                     playGame(createBoard(m, n, k), log);
         
                     /** 
-                     * Add the previous game's logs to the list of log lists.
+                     * Add the previous game's log to the list of games.
                      * Set the log to null so it's ready for another game, and 
                      * do NOT free the log (we want to keep it for displaying/
                      * saving). All game logs will be free'd when we destroy
@@ -110,7 +113,7 @@ void mainMenu(char* settingsFileName)
 
                 case 4 : /* Save logs */
                     #ifndef SECRET
-                    if(games == NULL || games->size < 1)
+                    if(games == NULL || games->size < 1) /* Any logs to save? */
                     {
                         printf("\nNo logs to save\n");
                     }
@@ -125,6 +128,8 @@ void mainMenu(char* settingsFileName)
                         printf("\nFailed to save logs\n");
                     }
                     #endif
+
+                    /* Prevent saving in secret mode */
                     #ifdef SECRET
                     printf("\nYou are playing in SECRET mode: cannot save logs.\n");
                     printf("To regain this ability, recompile normally.\n");
@@ -153,7 +158,24 @@ void mainMenu(char* settingsFileName)
     }
 }
 
-/*TODO: add comment; will probs return and import a linked list*/
+/* ****************************************************************************
+ * NAME:        playGame
+ *
+ * PURPOSE:     This function acts as an interface between the board struct
+ *              (game) and the user. From here, two players (X and O) can 
+ *              enter coordinates on the board and compete in a game.
+ *
+ *              The appropriate functions are called to print the board, log
+ *              moves to the imported list and to check for a winner each
+ *              iteration.
+ *                  
+ *              Player turns are tracked using the 'player' char variable, and
+ *              swap between 'O' and 'X' each iteration, with the starting
+ *              default being player X.
+ *
+ * IMPORTS:     board (Board pointer), log (LinkedList pointer)
+ * EXPORTS:     none
+ * ***************************************************************************/
 void playGame(Board* board, LinkedList* log)
 { 
     Log* thisLog; 
@@ -165,18 +187,18 @@ void playGame(Board* board, LinkedList* log)
     {
         printf("\n");
         displayBoard(board);
-        printf("\nPLAYER %c's TURN\n\n", player);
+        printf("\nPLAYER %c's TURN\n", player);
         turn++;
 
-        /* sub menu */
-        printf("1: Take turn\n2: Quit\n");
+        /* Sub menu */
         err = -1;
         do
         {
+            printf("\n1: Take turn\n2: Quit\n");
             option = readInt("--> ", 1, 2);
-            if(option != 0) /*if an error occured, 0 is returned*/
+            if(option != 0) /* If an error occured, 0 is returned */
             {
-                err = 0;
+                err = 0; /* Exit loop */
             }
         }
         while (err == -1);
@@ -185,7 +207,7 @@ void playGame(Board* board, LinkedList* log)
             case 1 : /* Take turn */
 
                 err = -1;
-                do /* keep reading coords until valid */
+                do /* Keep reading coords until valid */
                 {
                     if(readCoords(&xx, &yy) != -1)
                     {
@@ -196,14 +218,13 @@ void playGame(Board* board, LinkedList* log)
                         }
                     }
                 } 
-                while(err == -1);
-
-                sprintf(location, "(%d,%d)", xx, yy);              
+                while(err == -1); 
 
                 /* Update log */ 
                 thisLog = (Log*)malloc(sizeof(Log));
                 thisLog->turn = turn;
                 thisLog->player = player;
+                sprintf(location, "(%d,%d)", xx, yy);           
                 strcpy(thisLog->location, location);
     
                 insertLast(log, thisLog);
@@ -251,7 +272,7 @@ void playGame(Board* board, LinkedList* log)
 /* ****************************************************************************
  * NAME:        displayBoard
  *
- * PURPOSE:     To display the contents of a board to the terminal.
+ * PURPOSE:     To display the contents of the board to the terminal.
  *
  * IMPORTS:     board (Board pointer) 
  * EXPORTS:     none
@@ -273,10 +294,7 @@ void displayBoard(Board* board)
     }
     printf("=\n");
 
-    /** 
-     * Print board. 
-     * height is multiplied by 2 to include inner borders.
-     */
+    /* Print board */
     for(ii = 0; ii < board->height; ii++)
     {
         printf("||");
@@ -327,7 +345,17 @@ void displayBoard(Board* board)
     printf("=\n");
 }
 
-/*TODO*/
+/* ****************************************************************************
+ * NAME:        displayLogs
+ *
+ * PURPOSE:     Takes a list of log struct lists (linked list of linked 
+ *              lists). Each list inside the imported list is a 'game', and
+ *              contains sequence of logs. This function prints the logs of
+ *              every game, separating them with the header 'GAME X'.
+ *
+ * IMPORTS:     listOfGames (LinkedList pointer)
+ * EXPORTS:     none
+ * ***************************************************************************/
 void displayLogs(LinkedList* listOfGames)
 {
     int game = 0;
@@ -341,9 +369,53 @@ void displayLogs(LinkedList* listOfGames)
     }
 }
 
-/*TODO*/
+/* ****************************************************************************
+ * NAME:        freeGame
+ *
+ * PURPOSE:     The address of this function is passed to the generic linked
+ *              list and serves the purpose of freeing a 'game' (linked list
+ *              of log structs).
+ *              
+ *              This function is imported into freeLinkedList() when exiting
+ *              the program to free all of the games in the game list (before
+ *              the list of games itself is free'd).
+ *
+ * IMPORTS:     game (generic pointer)
+ * EXPORTS:     none
+ * ***************************************************************************/
 void freeGame(void* game)
 {
     LinkedList* gameLogs = (LinkedList*)game;
     freeLinkedList(gameLogs, &freeLog);
+}
+
+/* ****************************************************************************
+ * NAME:        freeLog
+ *
+ * PURPOSE:     The address of this function is passed through the generic 
+ *              linked list to free malloc'd log structs.
+ *
+ * IMPORTS:     log (generic pointer)
+ * EXPORTS:     none
+ * ***************************************************************************/
+void freeLog(void* log)
+{
+    free((Log*)log);
+}
+
+/* ****************************************************************************
+ * NAME:        printLog
+ *
+ * PURPOSE:     The address of this function is passed through the generic 
+ *              linked list when printing log structs.
+ *
+ * IMPORTS:     log (generic pointer)
+ * EXPORTS:     none
+ * ***************************************************************************/
+void printLog(void* log)
+{
+    Log* lg = (Log*)log;
+    printf("\n   Turn: %d\n", lg->turn);
+    printf("   Player: %c\n", lg->player);
+    printf("   Location: %s\n", lg->location);
 }
