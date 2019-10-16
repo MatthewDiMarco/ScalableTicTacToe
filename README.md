@@ -8,7 +8,8 @@ required to win (k).
 
 Once compiled, the program can be executed along with a settings file, using the below command:
 
-        ```./TicTacToe settings.txt
+        ```
+        ./TicTacToe settings.txt
         ```
 
 Note that any file in the same directory can be used, and does not explicitly need to be named settings.
@@ -17,7 +18,8 @@ Note that any file in the same directory can be used, and does not explicitly ne
 
 Before running, a settings file must be written. The settings file should contain three lines, each with one of the three settings: M (width), N (height) and K (number of matching tiles required to win). The program ignores the order and case sensitivity of the filr contents, but there should not be any missing or duplicate settings. An example of a valid settings file is given below:
 
-    ```M=5
+    ```
+    M=5
     N=3
     K=3
     ```
@@ -30,7 +32,8 @@ Upon successful loading of the settings file, a list will be displayed featuring
 
 If option 1 is selected from the main menu, a board is constructed and the displayBoard() function is called to draw up the rows and columns. An example of what the board will look like is given below:
 
-    ```   0   1   2   3   4
+    ```   
+       0   1   2   3   4
     =======================
     ||   | X |   |   |   || 0
     ||-------------------|| 
@@ -50,7 +53,8 @@ Note that each row and column are numbered. This decision was made to enable the
 
 An example of the contents in a saved log file is given below (same format when printing from menu).
 
-    ```SETTINGS
+    ```
+    SETTINGS
        M=5
        N=5
        K=3
