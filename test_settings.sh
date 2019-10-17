@@ -1,7 +1,14 @@
 #!/bin/bash
 
-# This script acts as a test harness for the TicTacToe C game, testing that
-# all runs expectedly on startup given a valid or invalid settings file.
+##
+ # FILE:        test_settings.sh
+ # AUTHOR:      Matthew Di Marco
+ # CREATED:     10/17/19
+ # -----
+ # PURPOSE:     This script acts as a test harness for the TicTacToe C game, 
+ #              testing that all runs expectedly on startup given a valid or 
+ #              invalid settings file.
+##
 
 # Temp files and exit message
 tempSet='temp_settings_file';
