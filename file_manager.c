@@ -157,7 +157,7 @@ int saveLogs(LinkedList* sessionList, int m, int n, int k)
 
     /*Write to string*/
     sprintf(flname, "MNK_%d-%d-%d_%d-%d_%d-%d.log",
-    m, n, k, local->tm_hour, local->tm_min, local->tm_mday, local->tm_mon);
+    m, n, k, local->tm_hour, local->tm_min, local->tm_mday, local->tm_mon + 1);
 
     /*Create file*/
     outfile = fopen(flname, "w");
