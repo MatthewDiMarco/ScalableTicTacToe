@@ -8,10 +8,8 @@ required to win (k).
 
 Once compiled, the program can be executed along with a settings file, using the below command:
 
-        ```
-        ./TicTacToe settings.txt
-        ```
-
+        `./TicTacToe settings.txt`
+       
 Note that any file in the same directory can be used, and does not explicitly need to be named settings.
 
 ## Settings (input) file
