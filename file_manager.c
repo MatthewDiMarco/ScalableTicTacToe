@@ -156,7 +156,7 @@ int saveLogs(LinkedList* sessionList, int m, int n, int k)
     local = localtime(&now);     
 
     /*Write to string*/
-    sprintf(flname, "MNK_%d-%d-%d_%d-%d_%d-%d.log",
+    sprintf(flname, "MNK_%d-%d-%d_%d-%d_%d-%d.log",     /*+1 month to compensate for 0-based indexing*/
     m, n, k, local->tm_hour, local->tm_min, local->tm_mday, local->tm_mon + 1);
 
     /*Create file*/

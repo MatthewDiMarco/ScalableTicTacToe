@@ -64,7 +64,7 @@ void mainMenu(char* settingsFileName)
             printf("\nSelect an option\n----------------\n");
             for(ii = 0; ii < NUM_OPTIONS; ii++)
             {
-                printf(ops[ii]);
+                printf("%s", ops[ii]);
             }
 
             /* Get user input and execute option */
